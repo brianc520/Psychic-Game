@@ -12,27 +12,68 @@
 <body>
     <div id="container"> 
         <p> Guess what letter I'm thinking of </p>
-        <p> Wins: </p>
-        <p> Losses: </p>
-        <p> Guesses Left: </p>
-        <p> Your Guesses So Far: </p>
+        <p id="wins-text"> Wins: </p>
+        <p id="losses-text"> Losses: </p>
+        <p id="GuessesLeft-text">Guesses Left:  </p>
+        <p id ="letterUser-text"> Your Guesses So Far </p>
     </div>
-    <script>
-    document.onkeyup = function(event) {
-    var userGuess = event.key;
-    console.log(event.key);
-    }
+    <script type="text/javascript">
+    
+    var letterChoices = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
     var wins = 0;
     var losses = 0;
-    var letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",];
-     
+    var guesses = 9;
+    var normalGuessingAmount = guesses;
+    var guessesArray = [];
     
     
+    var winsText = document.getElementById("wins-text");
+    var lossesText = document.getElementById("losses-text");
+    var GuessesLeftText = document.getElementById("GuessesLeft-text");
+    var yourGuessesSoFar =document.getElementById("letterUser-text")
+
+    var displayText = function() {
+
+    winsText.innerHTML = "Wins: " + wins;
+    lossesText.innerHTML = "Losses: " + losses;
+    GuessesLeftText.innerHTML = "Guesses left: " + guesses;
+    yourGuessesSoFar.innerHTML = " Your Guesses So Far: " + guessesArray;
+    }
     
+    var selectRandomLetter = function() {
+        randomLetter = letterChoices[Math.floor(Math.random()* letterChoices.length)]
+        console.log(randomLetter)
+        return randomLetter
+    }
+
+    var restartGame = function(){
+        guessesArray = [];
+        normalGuessingAmount = guesses;
+        currentLetter = selectRandomLetter();
+    }
+    var userGuessedRight = function (userChoice) {
+        return userChoice === currentLetter;
+    }
+    var userGuessedWrong = function () {
+        return normalGuessingAmount === 0;
+    }
     
-    
-    </script>
-    
-    
-</body>
-</html>
+    var currentLetter = selectRandomLetter();
+    displayText();
+    document.onkeyup = function (event) {
+        var userChoice = event.key;
+        normalGuessingAmount--
+        guessesArray.push(userChoice);
+
+        if(userGuessedRight(userChoice)) {
+            wins++;
+            restartGame();
+        }
+        if (userGuessedWrong()) {
+            losses++;
+            restartGame();
+        }
+        displayText();
+    };
+
+      </script>
